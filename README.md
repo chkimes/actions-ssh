@@ -15,11 +15,22 @@ Or run it only on failure:
         if: failure()
 ```
 
-By default, SSH is allowed only for the Action's `github.actor`, however you can override that to be a specific user:
+By default, SSH is allowed only for the Action's `${{ github.actor }}`, however you can override that to be a specific user:
 
 ```
     steps:
       - uses: chkimes/actions-ssh@v0.1
         with:
           sshUser: chkimes
+```
+
+## Connecting
+
+Follow the steps in the Actions logs to connect, e.g.:
+
+```
+==================================================================
+Connect to the tunnel with:
+    ssh chkimes/redacted@usw2.devtunnels.ms
+==================================================================
 ```
