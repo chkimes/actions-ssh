@@ -24,6 +24,8 @@ By default, SSH is allowed only for the Action's `${{ github.actor }}`, however 
           sshUser: chkimes
 ```
 
+Make sure you have SSH keys set up in your GitHub settings!
+
 ## Connecting
 
 Follow the steps in the Actions logs to connect, e.g.:
