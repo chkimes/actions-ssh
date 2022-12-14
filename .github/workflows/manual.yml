@@ -1,0 +1,12 @@
+name: Manual workflow
+on: workflow_dispatch
+
+jobs:
+  ssh:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: chkimes/actions-ssh@main
