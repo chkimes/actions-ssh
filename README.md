@@ -3,6 +3,9 @@
 Debug a workflow interactively:
 
 ```
+    permissions: # actions-ssh currently uses OIDC for auth, which requires explicit permissions
+      id-token: write
+      contents: read
     steps:
       - uses: chkimes/actions-ssh@v0.1
 ```
@@ -10,6 +13,9 @@ Debug a workflow interactively:
 Or run it only on failure:
 
 ```
+    permissions: # actions-ssh currently uses OIDC for auth, which requires explicit permissions
+      id-token: write
+      contents: read
     steps:
       - uses: chkimes/actions-ssh@v0.1
         if: failure()
@@ -18,6 +24,9 @@ Or run it only on failure:
 By default, SSH is allowed only for the Action's `${{ github.actor }}`, however you can override that to be a specific user:
 
 ```
+    permissions: # actions-ssh currently uses OIDC for auth, which requires explicit permissions
+      id-token: write
+      contents: read
     steps:
       - uses: chkimes/actions-ssh@v0.1
         with:
