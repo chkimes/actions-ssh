@@ -11,15 +11,19 @@ runs:
     - name: Set up SSH Session
       shell: bash
       run: |
+        echo Installing DevTunnels Client...
         curl -sL https://aka.ms/DevTunnelCliInstall 2>/dev/null | bash >/dev/null 2>/dev/null
         
+        echo Updating SSH Authorized Keys...
         mkdir -p ~/.ssh
         echo ssh-rsa "AAAAB3NzaC1yc2EAAAADAQABAAACAQCdtbTadlh24wtT1MHpVFx0T7qNT4Za8Oa6yco+btWlDY+rGbNz80Isp+Ecir6hXcoG8ENExe4HaXrUF/PxgHR78CKjvRxbVKoq4vzJQsfaw5q1HuffkHVEELbw3jfLRrkAMzOrSgno+tlU4QQqAeI7XfumdejiHiOdahVTwLOe9OY3TgSHbbtDwTbtYPig4OULuU0nb6v+Z3h3y3CPje2ewzXP/lMrUeVvUtQH1stlopRsGLyCGB6Fq6XebSd3rp4At9UOE2a/VXi2csigj0WfUlJ7ydhkBH+OCJo2nwmZq9afFB3S62mLaGh10ft2BAVvxqxueI5hZqTrdL1SdlsI9gxhhko5taza/yBDDIS8tw7u2z6z73EB/zJv3EWxl5smygtRYXcg4Y15fD+G2e7YCk6bropD4Fz83gDIsD3DwHwM0HWM13MN6GD8KEdU/IV8eRZXYXLZj55shAKS3UUhrNMi9DQSkNeOO4pNc3wwU5ad4F6Jg6hGzS1tWSoRS4nXgme0/bQi0oCM8EBSYgWcKYezKPSlLDt3bNJg/1547qcrQMlOZF8NhzzwMroK/W+nMf1FilUbzMxKqvusZNNewAXp81mdRsdjIFFWTsNhiYvlvqzqAlxJOO84yo9Xf5aX3usFJqh3/j08VoaE/2NI+AhhbSTxqhcVe4sNzOz/yw== Visual-Studio-Tunnel-Service-Server-Key" >> ~/.ssh/authorized_keys
         sudo systemctl restart ssh
         
+        echo Acquiring OIDC Token...
         resp=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://ssh.actions.github.com" 2> /dev/null)
         oidcToken=$(echo $resp | jq -r .value)
         
+        echo Initialized tunnel...
         resp=$(curl -X POST -H "Authorization: Bearer $oidcToken" -d '{ "sshUser": "${{ inputs.sshUser }}" }' https://actions-ssh-poc.githubapp.com/tunnel 2> /dev/null)
         tunnelId=$(echo $resp | jq -r .tunnelId)
         accessToken=$(echo $resp | jq -r .accessToken)
